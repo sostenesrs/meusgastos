@@ -1,0 +1,15 @@
+
+Objetivo: Criar uma api para gastos pessoais
+
+1: Criar estrutura do projeto
+2: Planejar o sistema
+    2.1: Controle de usuários (CRUD)
+        2.1.1: Autenticação com JWT
+    2.2: Criar centros de custo (CRUD)
+        2.2.1: Todo usuário deve estar vinculado à um centro de custo.
+    2.3: Criar os títulos a Pagar e a Receber (CRUD)
+        2.3.1: Todo título deve estar vinculado a um Usuário
+        2.3.1: Todo título deve estar vinculado a 1 ou mais centro de custos
+    2.4: Criar um endpoint de fluxo de caixa.
+        2.4.1 Obter o total a pagar, total a receber, o saldo, a lista de títulos a pagar, a lista de títulos a receber
+         podendo filtrar o período de vencimento.
