@@ -41,20 +41,20 @@ public class Titulo {
 
     @Column(name = "observacao", columnDefinition = "TEXT")
     private String observacaoTitulo;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "id_usuario")
+//    private Usuario usuario;
+//
+//    private ETipoTitulo tipo;
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "titulo_centrodecusto",
+//            joinColumns = @JoinColumn(name = "idTitulo"),
+//            inverseJoinColumns = @JoinColumn(name = "idCentroCusto")
+//    )
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
-
-    private ETipoTitulo tipo;
-
-    @ManyToMany
-    @JoinTable(
-            name = "titulo_centrodecusto",
-            joinColumns = @JoinColumn(name = "idTitulo"),
-            inverseJoinColumns = @JoinColumn(name = "idCentroDeCusto")
-    )
-
-    private List<CentroCusto> centrosCusto;
+//    private List<CentroCusto> centrosCusto;
 
 }

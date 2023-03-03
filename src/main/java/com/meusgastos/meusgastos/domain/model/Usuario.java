@@ -19,8 +19,9 @@ import java.util.List;
 public class Usuario{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "usuario_seq", allocationSize = 1, schema = "public")
+    @Column(name = "id_usuario", unique = true)
     private Long idUsuario;
 
     @Column(name = "nome", nullable = false)
@@ -43,8 +44,8 @@ public class Usuario{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataInativacao;
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Titulo> titulos;
+//    @OneToMany(mappedBy = "usuario")
+//    private List<Titulo> titulos;
 
 
 
