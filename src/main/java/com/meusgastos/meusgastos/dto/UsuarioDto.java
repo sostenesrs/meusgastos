@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class UsuarioDto {
     private String foto;
     private Date dataCadastro;
     private Date dataInativacao;
-//    private List<Titulo> titulos = new ArrayList<>();
+    private List<Titulo> titulos = new ArrayList<>();
 
 
 

@@ -1,5 +1,7 @@
 package com.meusgastos.meusgastos.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "titulos", schema = "meusgastos")
+@Table(name = "titulos", schema = "public")
 public class Titulo {
 
 
@@ -41,10 +43,11 @@ public class Titulo {
 
     @Column(name = "observacao", columnDefinition = "TEXT")
     private String observacaoTitulo;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "id_usuario")
-//    private Usuario usuario;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario")
+    @JsonIgnore(value = true)
+    private Usuario usuario;
 //
 //    private ETipoTitulo tipo;
 //

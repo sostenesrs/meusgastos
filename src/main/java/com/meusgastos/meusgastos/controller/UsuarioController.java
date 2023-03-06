@@ -23,17 +23,17 @@ public class UsuarioController {
     }
 
     @GetMapping("/buscar-usuario/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable (value = "id") Long id) {
+    public ResponseEntity<UsuarioDto> buscarUsuarioPorId(@PathVariable (value = "id") Long id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @PostMapping("/cadastrar-usuario")
-    public ResponseEntity<Usuario> cadastrarNovo(@RequestBody Usuario usuario){
+    public ResponseEntity<UsuarioDto> cadastrarNovo(@RequestBody UsuarioDto usuario){
         return ResponseEntity.ok(usuarioService.cadastrarNovo(usuario));
     }
 
     @PutMapping("/alterar-usuario/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable (value = "id") Long id,
+    public ResponseEntity<UsuarioDto> atualizarUsuario(@PathVariable (value = "id") Long id,
                                                     @RequestBody Usuario usuario) throws Exception {
         return ResponseEntity.ok(usuarioService.updateUsuario(usuario, id));
     }
@@ -43,6 +43,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.deleteUsuario(id));
     }
 
+    //TODO: criar método para validar senha e outros campos obrigatorios
 }
 
 

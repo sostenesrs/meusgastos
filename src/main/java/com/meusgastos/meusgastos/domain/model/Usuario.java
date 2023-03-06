@@ -1,5 +1,6 @@
 package com.meusgastos.meusgastos.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,8 +45,9 @@ public class Usuario{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataInativacao;
 
-//    @OneToMany(mappedBy = "usuario")
-//    private List<Titulo> titulos;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("titulos")
+    private List<Titulo> titulos;
 
 
 

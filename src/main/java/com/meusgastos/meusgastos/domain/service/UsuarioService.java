@@ -21,42 +21,66 @@ public class UsuarioService {
     public List<Usuario> buscarTodos(){
         List<Usuario> user = usuarioRepository.findAll();
         if(user.isEmpty()){
-            throw new RuntimeErrorException(new Error("O usuario não foi encontrado com o parâmetro informado"));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foram encontrados dados com o parâmetro informado");
         }
         return user;
     }
 
-    public Usuario buscarPorId(Long id){
+    public UsuarioDto buscarPorId(Long id){
+
         Optional<Usuario> user =usuarioRepository.findById(id);
         if (user.isEmpty()) {
-            throw new RuntimeErrorException(new Error("O usuario não foi encontrado com o parâmetro informado"));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foi encontrado com o parâmetro informado");
         }else{
-            return user.get();
+            return entityToDto(user.get());
         }
-
     }
 
-    public Usuario cadastrarNovo(Usuario usuario){
-            usuarioRepository.save(usuario);
-            return usuario;
+    public UsuarioDto cadastrarNovo(UsuarioDto usuario){
+            Usuario entity = dtoToEntity(usuario);
+            if (entity.getNome().isBlank()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O nome é um campo obrigatório");
+            }
+            if(entity.getEmail().isBlank()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail é um campo obrigatório");
+            }else{
+                if(usuarioRepository.existsByEmail(entity.getEmail())){
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail informado já está sendo utilizado");
+                }
+            }
+            if(entity.getSenha().isBlank()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O senha é um campo obrigatório");
+            }
+            if (entity.getIdUsuario() == null) {
+                entity.setDataCadastro(new Date());
+            }else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O ID informado já está em uso. Não é necessário informar o novo ID");
+            }
+            usuarioRepository.save(entity);
+            return entityToDto(entity);
     }
 
-    public Usuario updateUsuario(Usuario usuario, Long id) throws Exception {
-        Optional<Usuario> user = usuarioRepository.findById(id);
-        if (user.isEmpty()) {
+    public UsuarioDto updateUsuario(Usuario usuario, Long id) {
+        Usuario novoUsuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario.getNome().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O nome é um campo obrigatório");
+        }
+        if(usuario.getEmail().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail é um campo obrigatório");
+        }
+        if (novoUsuario.getIdUsuario()==null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foi encontrado com o parâmetro informado");
         }else {
-            Usuario novoUsuario = new Usuario();
-            novoUsuario.setIdUsuario(id);
+
             novoUsuario.setNome(usuario.getNome());
             novoUsuario.setFoto(usuario.getFoto());
             novoUsuario.setEmail(usuario.getEmail());
             novoUsuario.setSenha(usuario.getSenha());
-            novoUsuario.setDataCadastro(usuario.getDataCadastro());
+            novoUsuario.setDataCadastro(novoUsuario.getDataCadastro());
             novoUsuario.setDataInativacao(usuario.getDataInativacao());
 
             usuarioRepository.save(novoUsuario);
-            return novoUsuario;
+            return entityToDto(novoUsuario);
         }
     }
 
@@ -77,10 +101,12 @@ public class UsuarioService {
         entity.setIdUsuario(dto.getId());
         entity.setNome(dto.getNome());
         entity.setEmail(dto.getEmail());
-        entity.setSenha(entity.getSenha());
+        entity.setSenha(dto.getSenha());
         entity.setFoto(dto.getFoto());
         entity.setDataCadastro(dto.getDataCadastro());
         entity.setDataInativacao(dto.getDataInativacao());
+        entity.setTitulos((dto.getTitulos()));
+
         return entity;
     }
 
@@ -93,11 +119,13 @@ public class UsuarioService {
         dto.setSenha(entity.getSenha());
         dto.setFoto(entity.getFoto());
         dto.setDataCadastro(entity.getDataCadastro());
-        dto.setDataInativacao(dto.getDataInativacao());
+        dto.setDataInativacao(entity.getDataInativacao());
+        dto.setTitulos(entity.getTitulos());
 
         return dto;
 
     }
+
 
 
 }
