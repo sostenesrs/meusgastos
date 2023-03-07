@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.management.RuntimeErrorException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +20,14 @@ public class UsuarioService {
     public List<Usuario> buscarTodos(){
         List<Usuario> user = usuarioRepository.findAll();
         if(user.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foram encontrados dados com o parâmetro informado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Os usuarios não foram encontrados com o parâmetro informado");
         }
         return user;
     }
 
     public UsuarioDto buscarPorId(Long id){
 
-        Optional<Usuario> user =usuarioRepository.findById(id);
+        Optional<Usuario> user = usuarioRepository.findById(id);
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foi encontrado com o parâmetro informado");
         }else{
@@ -60,18 +59,21 @@ public class UsuarioService {
             return entityToDto(entity);
     }
 
-    public UsuarioDto updateUsuario(Usuario usuario, Long id) {
-        Usuario novoUsuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario.getNome().isBlank()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O nome é um campo obrigatório");
+    public UsuarioDto updateUsuario(UsuarioDto usuario) {
+        if(usuario == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados informados inválidos");
         }
-        if(usuario.getEmail().isBlank()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O e-mail é um campo obrigatório");
+        if(usuario.getId()==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O ID informado é inválido");
         }
-        if (novoUsuario.getIdUsuario()==null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foi encontrado com o parâmetro informado");
-        }else {
+        Usuario temp = usuarioRepository.findById(usuario.getId()).orElse(null);
+        if(temp==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O ID informado não foi encontrado");
+        }
 
+            Usuario novoUsuario = new Usuario();
+
+            novoUsuario.setIdUsuario(usuario.getId());
             novoUsuario.setNome(usuario.getNome());
             novoUsuario.setFoto(usuario.getFoto());
             novoUsuario.setEmail(usuario.getEmail());
@@ -81,10 +83,13 @@ public class UsuarioService {
 
             usuarioRepository.save(novoUsuario);
             return entityToDto(novoUsuario);
-        }
+
     }
 
     public String deleteUsuario(Long id){
+        if(id==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O ID é um campo obrigatório");
+        }
         Optional<Usuario> user = usuarioRepository.findById(id);
         if(user.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "O usuario não foi encontrado com o parâmetro informado");

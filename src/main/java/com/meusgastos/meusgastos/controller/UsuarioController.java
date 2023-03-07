@@ -23,7 +23,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/buscar-usuario/{id}")
-    public ResponseEntity<UsuarioDto> buscarUsuarioPorId(@PathVariable (value = "id") Long id) {
+    public ResponseEntity<UsuarioDto> buscarUsuarioPorId(@PathVariable (value = "id", required = true) Long id) {
         return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
@@ -32,10 +32,10 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.cadastrarNovo(usuario));
     }
 
-    @PutMapping("/alterar-usuario/{id}")
-    public ResponseEntity<UsuarioDto> atualizarUsuario(@PathVariable (value = "id") Long id,
-                                                    @RequestBody Usuario usuario) throws Exception {
-        return ResponseEntity.ok(usuarioService.updateUsuario(usuario, id));
+    @PutMapping("/alterar-usuario/")
+    public ResponseEntity<UsuarioDto> atualizarUsuario(
+                                                    @RequestBody UsuarioDto usuario) throws Exception {
+        return ResponseEntity.ok(usuarioService.updateUsuario(usuario));
     }
 
     @DeleteMapping("/excluir-usuario/{id}")

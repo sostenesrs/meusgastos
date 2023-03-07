@@ -48,16 +48,15 @@ public class Titulo {
     @JoinColumn(name = "idUsuario")
     @JsonIgnore(value = true)
     private Usuario usuario;
+
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_centro_custo")
+    @JsonIgnore(value = true)
+    private CentroCusto centroCusto;
+
+
 //
 //    private ETipoTitulo tipo;
 //
-//    @ManyToMany
-//    @JoinTable(
-//            name = "titulo_centrodecusto",
-//            joinColumns = @JoinColumn(name = "idTitulo"),
-//            inverseJoinColumns = @JoinColumn(name = "idCentroCusto")
-//    )
-
-//    private List<CentroCusto> centrosCusto;
 
 }
