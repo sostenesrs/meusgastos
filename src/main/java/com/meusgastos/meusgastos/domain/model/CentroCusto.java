@@ -28,7 +28,8 @@ public class CentroCusto {
     @Column(name = "observacao", columnDefinition = "TEXT")
     private String observacao;
 
-    @OneToMany(mappedBy = "centroCusto", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "centroCusto")
+    @JsonBackReference
     @JsonIgnoreProperties("titulos")
     private List<Titulo> titulos;
 

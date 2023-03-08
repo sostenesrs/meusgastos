@@ -1,7 +1,9 @@
 package com.meusgastos.meusgastos.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,14 +46,16 @@ public class Titulo {
     @Column(name = "observacao", columnDefinition = "TEXT")
     private String observacaoTitulo;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne
+//    (cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "idUsuario")
-    @JsonIgnore(value = true)
+    @JsonManagedReference
+    @JsonIgnore
     private Usuario usuario;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_centro_custo")
-    @JsonIgnore(value = true)
+    @JsonManagedReference
     private CentroCusto centroCusto;
 
 

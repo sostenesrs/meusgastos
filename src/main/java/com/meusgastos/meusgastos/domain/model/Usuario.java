@@ -1,5 +1,7 @@
 package com.meusgastos.meusgastos.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,8 +47,8 @@ public class Usuario{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataInativacao;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("titulos")
+    @OneToMany(mappedBy = "usuario")
+    @JsonBackReference
     private List<Titulo> titulos;
 
 
