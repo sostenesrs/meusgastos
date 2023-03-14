@@ -14,14 +14,14 @@ import java.util.List;
 @NoArgsConstructor
 public class UsuarioDto {
 
-    private Long id;
+    private Long idUsuario;
     private String nome;
     private String email;
     private String senha;
     private String foto;
     private Date dataCadastro;
     private Date dataInativacao;
-    private List<Titulo> titulos = new ArrayList<>();
+    private List<Titulo> titulos;
 
 
 
