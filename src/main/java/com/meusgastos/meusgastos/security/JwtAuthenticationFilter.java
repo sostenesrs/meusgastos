@@ -8,6 +8,7 @@ import com.meusgastos.meusgastos.domain.model.Usuario;
 import com.meusgastos.meusgastos.dto.LoginRequestDto;
 import com.meusgastos.meusgastos.dto.LoginResponseDto;
 import com.meusgastos.meusgastos.dto.UsuarioDto;
+import com.meusgastos.meusgastos.dto.UsuarioResponseDto;
 import jakarta.servlet.FilterChain;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,23 +55,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-//    @Override se der ok na autenticação
-    protected void successfullAuthentication(HttpServletRequest request, HttpServletResponse response,
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
         FilterChain chain, Authentication authResult) throws IOException {
 
         Usuario usuario = (Usuario) authResult.getPrincipal();
         String token = jwtUtil.gerarToken(authResult);
 
-        UsuarioDto usuarioDto = new UsuarioDto();
+        UsuarioResponseDto usuarioDto = new UsuarioResponseDto();
 
         usuarioDto.setIdUsuario(usuario.getIdUsuario());
         usuarioDto.setEmail(usuario.getEmail());
         usuarioDto.setNome(usuario.getNome());
         usuarioDto.setFoto(usuario.getFoto());
-        usuarioDto.setDataInativacao(usuario.getDataInativacao());
         usuarioDto.setDataCadastro(usuario.getDataCadastro());
-        usuarioDto.setSenha(usuario.getSenha());
-        usuarioDto.setTitulos(usuario.getTitulos());
+
 
         LoginResponseDto loginResponseDto = new LoginResponseDto();
         loginResponseDto.setToken("Bearer " + token);
@@ -83,8 +82,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.getWriter().write(new Gson().toJson(loginResponseDto));
     }
 
-//    @Override se der erro
-    protected void unsuccessfullAuthentication(HttpServletRequest request, HttpServletResponse response,
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                AuthenticationException failed) throws IOException {
 
         String dataHora = ConversorData.convererDateParaString(new Date());

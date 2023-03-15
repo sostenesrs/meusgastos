@@ -11,7 +11,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "usuario", schema = "public")
 public class Usuario implements UserDetails{
@@ -42,7 +44,7 @@ public class Usuario implements UserDetails{
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataInativacao;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario")
     @JsonBackReference
     private List<Titulo> titulos;
 
@@ -87,78 +89,4 @@ public class Usuario implements UserDetails{
 //    #endregion
 
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
-    public Date getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(Date dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public Date getDataInativacao() {
-        return dataInativacao;
-    }
-
-    public void setDataInativacao(Date dataInativacao) {
-        this.dataInativacao = dataInativacao;
-    }
-
-    public List<Titulo> getTitulos() {
-        return titulos;
-    }
-
-    public void setTitulos(List<Titulo> titulos) {
-        this.titulos = titulos;
-    }
-
-    public Usuario(Long idUsuario, String nome, String email, String senha, String foto, Date dataCadastro, Date dataInativacao, List<Titulo> titulos) {
-        this.idUsuario = idUsuario;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.foto = foto;
-        this.dataCadastro = dataCadastro;
-        this.dataInativacao = dataInativacao;
-        this.titulos = titulos;
-    }
 }

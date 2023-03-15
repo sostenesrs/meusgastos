@@ -18,8 +18,9 @@ import java.util.List;
 public class CentroCusto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_centro_custo", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "usuario_seq", allocationSize = 1, schema = "public")
+    @Column(name = "id_centro_custo", unique = true)
     private Long idCentroCusto;
 
     @Column(name = "descricao", nullable = false)
@@ -32,6 +33,10 @@ public class CentroCusto {
     @JsonBackReference
     @JsonIgnoreProperties("titulos")
     private List<Titulo> titulos;
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuario")
+    private Usuario usuario;
 
 
 }

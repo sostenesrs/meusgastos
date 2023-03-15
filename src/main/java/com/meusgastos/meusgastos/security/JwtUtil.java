@@ -1,12 +1,10 @@
 package com.meusgastos.meusgastos.security;
 
 import com.meusgastos.meusgastos.domain.model.Usuario;
-import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +44,7 @@ public class JwtUtil {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return "";
+//            return ResponseEntity.badRequest().build();
         }
 
     }

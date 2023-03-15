@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/meusgastos")
+@RequestMapping(value = "/usuario")
 public class UsuarioController {
 
     //conferir a ulr de autenticacao
@@ -34,7 +34,7 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.cadastrarNovo(usuario));
     }
 
-    @PutMapping("/alterar-usuario/")
+    @PutMapping("/alterar-usuario")
     public ResponseEntity<UsuarioDto> atualizarUsuario(
                                                     @RequestBody UsuarioDto usuario) throws Exception {
         return ResponseEntity.ok(usuarioService.updateUsuario(usuario));
@@ -49,6 +49,7 @@ public class UsuarioController {
     public ResponseEntity<String> inativarUsuario(@PathVariable (value = "id") Long id){
         return ResponseEntity.ok(usuarioService.inativarUsuario(id));
     }
+
 
 }
 

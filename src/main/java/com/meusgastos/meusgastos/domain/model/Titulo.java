@@ -46,7 +46,7 @@ public class Titulo {
     @Column(name = "observacao", columnDefinition = "TEXT")
     private String observacaoTitulo;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "idUsuario")
 //    @JsonManagedReference
     @JsonIgnore

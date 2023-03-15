@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class LoginResponseDto {
+public class CentroDeCustoRequestDto {
 
-    private String token;
+    private Long idCentroCusto;
 
-    private UsuarioResponseDto usuario;
+    private String descricao;
+
+    private String observacao;
 }

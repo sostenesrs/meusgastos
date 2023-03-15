@@ -103,6 +103,7 @@ public class UsuarioService {
             novoUsuario.setDataInativacao(usuario.getDataInativacao());
             String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
             novoUsuario.setSenha(senhaCriptografada);
+            novoUsuario.setTitulos(usuario.getTitulos());
 
             usuarioRepository.save(novoUsuario);
             return entityToDto(novoUsuario);
