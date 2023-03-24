@@ -34,8 +34,8 @@ public class CentroDeCustoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/atualizar/{id}")
-    private ResponseEntity<CentroDeCustoResponseDto> atualizar(@PathVariable Long id,
+    @PutMapping("/atualizar/{id}")//corrigir para passar id somente pelo path
+    private ResponseEntity<CentroDeCustoResponseDto> atualizar(@PathVariable (value = "id", required = true) Long id,
                                                                @RequestBody CentroDeCustoRequestDto dto){
         return ResponseEntity.ok(centroDeCustoService.atualizarCentroDeCusto(id, dto));
     }

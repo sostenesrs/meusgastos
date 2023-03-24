@@ -39,7 +39,7 @@ public class TituloController {
     @PutMapping("/atualizar/{id}")
     private ResponseEntity<TituloResponseDto> atualizar(@PathVariable Long id,
                                                                @RequestBody TituloRequestDto dto){
-        return ResponseEntity.ok(tituloService.atualizarCentroDeCusto(id, dto));
+        return ResponseEntity.ok(tituloService.atualizar(id, dto));
     }
 
     @DeleteMapping("/excluir/{id}")

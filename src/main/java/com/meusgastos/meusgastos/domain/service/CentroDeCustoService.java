@@ -25,7 +25,10 @@ public class CentroDeCustoService {
     private ModelMapper mapper;
 
     public List<CentroDeCustoResponseDto> buscarTodos(){
-        List<CentroCusto> lista = centroDeCustoRepository.findAll();
+        //traz o usuario do contexto (logado)
+        Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //busca titulos somente do usuario autenticado
+        List<CentroCusto> lista = centroDeCustoRepository.findByUsuario(usuarioAutenticado);
 
         if(lista.isEmpty()){
             throw new ResourceNotFoundRequestException("Dados não encontrados");
@@ -36,7 +39,11 @@ public class CentroDeCustoService {
 
     public CentroDeCustoResponseDto buscarPorId(Long id){
         Optional<CentroCusto> optCentroDeCusto = centroDeCustoRepository.findById(id);
-        if(optCentroDeCusto.isEmpty()){
+
+        //traz o usuario do contexto (logado)
+        Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if(optCentroDeCusto.isEmpty()|| optCentroDeCusto.get().getUsuario().getIdUsuario() != usuarioAutenticado.getIdUsuario()){
             throw new ResourceNotFoundRequestException("Não foi encontrado centro de custo com o ID informado");
         }
         return mapper.map(optCentroDeCusto.get(), CentroDeCustoResponseDto.class);
@@ -50,7 +57,6 @@ public class CentroDeCustoService {
         Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //salva usuario autenticado no centro de custo
         centroCusto.setUsuario(usuarioAutenticado);
-//        centroCusto.setIdCentroCusto(null);
         centroCusto = centroDeCustoRepository.save(centroCusto);
 
         return mapper.map(centroCusto, CentroDeCustoResponseDto.class);

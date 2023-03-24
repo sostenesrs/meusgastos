@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,7 +30,12 @@ public class TituloService {
     private ModelMapper mapper;
 
     public List<TituloResponseDto> buscarTodos(){
-        List<Titulo> titulos = tituloRepository.findAll();
+        //traz o usuario do contexto
+        Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //busca titulos somente do usuario autenticado
+        List<Titulo> titulos = tituloRepository.findByUsuario(usuarioAutenticado);
+
         if(titulos.isEmpty()){
             throw new ResourceNotFoundRequestException("Dados não encontrados");
         }
@@ -39,27 +45,38 @@ public class TituloService {
 
     public TituloResponseDto buscarPorId(Long id){
         Optional<Titulo> optTitulo = tituloRepository.findById(id);
-        if(optTitulo.isEmpty()){
+
+        //traz o usuario do contexto
+        Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //valida se o usuario logado e o mesmo do titulo encontrado no banco
+        if(optTitulo.isEmpty() || optTitulo.get().getUsuario().getIdUsuario() != usuarioAutenticado.getIdUsuario()){
             throw new ResourceNotFoundRequestException("Não foi encontrado título com o ID informado");
         }
         return mapper.map(optTitulo.get(), TituloResponseDto.class);
     }
 
     public TituloResponseDto cadastrarNovo(TituloRequestDto dto){
+        //valida campos obrigatorios
         validarTitulo(dto);
+
         //transforma o dto em entidade
         Titulo titulo = mapper.map(dto, Titulo.class);
+
         //descobre quem é o usuario autenticado
         Usuario usuarioAutenticado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         //salva usuario autenticado no centro de custo
         titulo.setUsuario(usuarioAutenticado);
-    //  centroCusto.setIdCentroCusto(null);
+
+        titulo.setDataCadastro(new Date());
+
         titulo = tituloRepository.save(titulo);
 
         return mapper.map(titulo, TituloResponseDto.class);
     }
 
-    public TituloResponseDto atualizarCentroDeCusto(Long id, TituloRequestDto dto){
+    public TituloResponseDto atualizar(Long id, TituloRequestDto dto){
         Optional<Titulo> opt = tituloRepository.findById(id);
         if(opt.isEmpty()){
             throw new ResourceNotFoundRequestException("Não foi encontrado título com o ID informado");
@@ -85,11 +102,17 @@ public class TituloService {
     }
 
     private void validarTitulo(TituloRequestDto dto){
-        if(dto.getTipo()==null || dto.getDataVencimento()==null || dto.getValor()==null ||dto.getDescricaoTitulo()==null){
+        if( dto.getDataVencimento()==null || dto.getValor()==null ||dto.getDescricaoTitulo()==null){
             throw new ResourceBadRequestException("Os campos Tipo, Data de Vencimento, Valor e Descrição são obrigatórios");
         }
     }
 
+    public List<TituloResponseDto> buscarPorVencimento(String periodoInicial, String periodoFinal){
+        List<Titulo> titulos = tituloRepository.buscarPorDataVencimento(periodoInicial, periodoFinal);
+
+        return titulos.stream()
+                .map(titulo -> mapper.map(titulo, TituloResponseDto.class)).collect(Collectors.toList());
+    }
 
 
 }

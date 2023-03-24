@@ -2,17 +2,17 @@ package com.meusgastos.meusgastos.domain.model;
 
 public enum ETipoTitulo {
 
-        A_RECEBER ("A receber"),
-        A_Pagar("A pagar");
+    RECEBER("A receber"),
+    PAGAR("A pagar");
 
-        private String valor;
+    private String valor;
 
-        private ETipoTitulo(String valor){
-            this.valor = valor;
-        }
+    private ETipoTitulo(String valor){
+        this.valor = valor;
+    }
 
-        public String getValor(){
-            return this.valor;
-        }
+    public String getValor(){
+        return this.valor;
+    }
 
 }

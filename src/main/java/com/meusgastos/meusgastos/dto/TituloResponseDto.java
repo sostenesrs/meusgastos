@@ -21,7 +21,7 @@ public class TituloResponseDto {
     private Date dataVencimento;
     private Date dataPagamento;
     private String observacaoTitulo;
-    private Usuario usuario;
+//    private Usuario usuario;
     private List<CentroDeCustoResponseDto> centroCusto;
     private ETipoTitulo tipo;
 }

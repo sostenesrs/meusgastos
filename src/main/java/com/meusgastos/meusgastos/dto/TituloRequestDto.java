@@ -1,10 +1,8 @@
 package com.meusgastos.meusgastos.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.meusgastos.meusgastos.domain.model.CentroCusto;
+
 import com.meusgastos.meusgastos.domain.model.ETipoTitulo;
 import com.meusgastos.meusgastos.domain.model.Usuario;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +23,6 @@ public class TituloRequestDto {
     private Date dataPagamento;
     private String observacaoTitulo;
     private Usuario usuario;
-    private List<CentroDeCustoRequestDto> centroCusto;
+    private CentroDeCustoRequestDto centroCusto;
     private ETipoTitulo tipo;
 }

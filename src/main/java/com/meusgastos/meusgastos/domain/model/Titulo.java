@@ -21,8 +21,9 @@ public class Titulo {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_titulo", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuario_seq")
+    @SequenceGenerator(name = "usuario_seq", sequenceName = "usuario_seq", allocationSize = 1, schema = "public")
+    @Column(name = "id_titulo")
     private Long idTitulo;
 
     @Column(name = "descricao")
@@ -36,11 +37,11 @@ public class Titulo {
     private Date dataCadastro;
 
     @Column(name = "data_vencimento")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dataVencimento;
 
     @Column(name = "data_pagamento")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date dataPagamento;
 
     @Column(name = "observacao", columnDefinition = "TEXT")
@@ -48,18 +49,14 @@ public class Titulo {
 
     @ManyToOne
     @JoinColumn(name = "idUsuario")
-//    @JsonManagedReference
     @JsonIgnore
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "id_centro_custo")
-//    @JsonManagedReference
     private CentroCusto centroCusto;
 
-
-//
-//    private ETipoTitulo tipo;
-//
+    @Column(name = "tipo_titulo", length = 255, insertable = true)
+    private ETipoTitulo tipo;
 
 }
